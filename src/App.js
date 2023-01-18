@@ -37,7 +37,27 @@ function App() {
 			<div className="recipes">
 				{recipes.map((recipe, i) => (
 					<div className="recipe" key={recipe.id}>
-						{recipe.title}
+						<h3>{recipe.title}</h3>
+
+						<p dangerouslySetInnerHTML={{ __html: recipe.desc }}></p>
+						<div>
+							<h4>Ingredients</h4>
+							<ul>
+								{recipe.ingredients.map((ingredient, i) => (
+									<li key={i}>{ingredient}</li>
+								))}
+							</ul>
+
+							<h4>Steps</h4>
+							<ol>
+								{recipe.steps.map((step, i) => (
+									<li key={i}>{step}</li>
+								))}
+							</ol>
+						</div>
+						<div className="buttons">
+							<button> View {recipe.viewing ? "less" : "more"}</button>
+						</div>
 					</div>
 				))}
 			</div>
