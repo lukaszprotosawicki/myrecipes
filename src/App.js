@@ -1,5 +1,48 @@
+import { db } from "./firebase.config";
+import { useState, useEffect } from "react";
+import { collection, onSnapshot } from "firebase/firestore";
+
 function App() {
-  return <div className="App">Myreipes</div>;
+	const [recipes, setRecipes] = useState([]);
+	const [form, setForm] = useState({
+		title: "",
+		desc: "",
+		ingredients: [],
+		steps: [],
+	});
+
+	const [popupActive, setPopupActive] = useState(false);
+
+	const recipesCollectionRef = collection(db, "recipes");
+
+	useEffect(() => {
+		onSnapshot(recipesCollectionRef, (snapshot) => {
+			setRecipes(
+				snapshot.docs.map((doc) => {
+					return {
+						id: doc.id,
+						viewing: false,
+						...doc.data(),
+					};
+				})
+			);
+		});
+	}, []);
+
+	return (
+		<div className="App">
+			<h1>My recipes</h1>
+
+			<button>Add recipe</button>
+			<div className="recipes">
+				{recipes.map((recipe, i) => (
+					<div className="recipe" key={recipe.id}>
+						{recipe.title}
+					</div>
+				))}
+			</div>
+		</div>
+	);
 }
 
 export default App;
